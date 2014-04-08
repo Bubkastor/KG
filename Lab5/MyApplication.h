@@ -17,7 +17,6 @@ protected:
 	virtual void OnIdle();
 	virtual void OnDisplay(void);
 	virtual void OnReshape(int width, int height);
-	virtual void OnSpecialHadler(int key, int x, int y);
 	virtual void OnKeyboard(unsigned char key, int x, int y);
 
 
@@ -31,7 +30,7 @@ private:
 
 	float m_angle;
 
-	static const int DELTA_ANGLE = 1;
+	//static const int DELTA_ANGLE = 1;
 	static const double DELTA;
 
 	GLdouble m_eyex;
@@ -46,7 +45,7 @@ private:
 
 	CSkyBox m_skyBox;
 
-	static const float ROTATION_SPEED;
+	static const int ROTATION_SPEED;
 	static const double FOV;
 	static const double ZNEAR;
 	static const double ZFAR;

@@ -4,9 +4,9 @@
 
 const float M_PI = 3.14159265358979323846f;
 const double CMyApplication::FOV = 60;
-const double CMyApplication::ZNEAR = 1;
-const double CMyApplication::ZFAR = 100;
-const float CMyApplication::ROTATION_SPEED = 20;
+const double CMyApplication::ZNEAR = 0.1;//1
+const double CMyApplication::ZFAR = 200;//100
+const int CMyApplication::ROTATION_SPEED = 2;
 const double CMyApplication::DELTA = 0.1;
 
 
@@ -43,7 +43,7 @@ L"images/rockTexture1.jpg")
 
 CMyApplication::~CMyApplication(void)
 {
-}
+} 
 
 void CMyApplication::OnInit()
 {
@@ -99,18 +99,19 @@ void CMyApplication::OnReshape(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
-//void CMyApplication::OnSpecialHadler(int key, int x, int y)
 void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 {
-	if (key == GLUT_KEY_LEFT)
+	if ((key == 'a') || (key == 'A'))/*GLUT_KEY_LEFT*/
 	{
-		m_angle += (DELTA_ANGLE * M_PI) / 180;
+		//m_angle += (DELTA_ANGLE * M_PI) / 180;
+		m_angle += (ROTATION_SPEED * M_PI) / 180;
 	}
-	else if (key == GLUT_KEY_RIGHT)
+	else if ((key == 'd') || (key == 'D'))/*GLUT_KEY_RIGHT*/
 	{
-		m_angle -= (DELTA_ANGLE * M_PI) / 180;
+		//m_angle -= (DELTA_ANGLE * M_PI) / 180;
+		m_angle -= (ROTATION_SPEED * M_PI) / 180;
 	}
-	else if (key == GLUT_KEY_UP)
+	else if ((key == 'w') || (key == 'W')) /*GLUT_KEY_UP*/
 	{
 		GLdouble tempEyeX = m_eyex + (DELTA * cos(m_angle));
 		GLdouble tempEyeY = m_eyey + (DELTA * sin(m_angle));
@@ -120,7 +121,7 @@ void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 			m_eyey = tempEyeY;
 		}
 	}
-	else if (key == GLUT_KEY_DOWN)
+	else if ((key == 's') || (key == 'S')) /*GLUT_KEY_DOWN*/
 	{
 		GLdouble tempEyeX = m_eyex - (DELTA * cos(m_angle));
 		GLdouble tempEyeY = m_eyey - (DELTA * sin(m_angle));
@@ -133,7 +134,8 @@ void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 
 	m_centerx = m_eyex + (DELTA * cos(m_angle));
 	m_centery = m_eyey + (DELTA * sin(m_angle));
-
+	if (key == VK_ESCAPE)
+		exit(1);
 	PostRedisplay();
 }
 

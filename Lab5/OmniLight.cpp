@@ -14,7 +14,7 @@ void COmniLight::SetLight(GLenum light)const
 	GLfloat lightPosition[4] =
 	{
 		m_position.x,
-		m_position.y,
+		m_position.y, 
 		m_position.z,
 		1
 	};

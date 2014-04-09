@@ -143,8 +143,6 @@ void CCube::Draw()const
 
 bool CCube::IsInsideTheCube(GLdouble x, GLdouble y) const
 {
-	//if ((x > m_minX) && (x < m_maxX) && (y > m_minY) && (y < m_maxY))
-
 	if ((x >= m_minX - 0.11) && (x <= m_maxX + 0.11) && (y >= m_minY - 0.11) && (y <= m_maxY + 0.11))
 		return true;
 	return false;

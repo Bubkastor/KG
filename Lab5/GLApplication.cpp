@@ -56,8 +56,14 @@ void CGLApplication::InitEventHandlers()
 	glutMotionFunc(&MotionHandler);
 	glutIdleFunc(&IdleHandler);
 	glutSpecialFunc(&SpecialHandler);
+	glutPassiveMotionFunc(&PassiveMotion);
 	// При желании можно добавить обработчики остальных
 	// событий, поддерживаемых glut
+}
+
+void CGLApplication::PassiveMotion(int x, int y)
+{
+	m_pApplication->OnPassiveMotion(x, y);
 }
 
 void CGLApplication::MotionHandler(int x, int y)
@@ -138,6 +144,11 @@ void CGLApplication::OnIdle()
 
 // Метод может быть перегружен в классе-наследнике
 void CGLApplication::OnSpecialHadler(int key, int x, int y)
+{
+
+}
+
+void CGLApplication::OnPassiveMotion(int x, int y)
 {
 
 }

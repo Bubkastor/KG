@@ -26,14 +26,14 @@ L"images/Galaxy_FT.png"
 L"images/brickTexture1.jpg",
 L"images/brickTexture2.jpg",
 L"images/brickTexture3.jpg",
-L"images/brickTexture4.jpg",
-L"images/brickTexture5.jpg",
+L"images/well1.jpg",
+L"images/well.jpg",
 L"images/rockTexture1.jpg")
 , m_angle(0)
 , m_polygonMode(GL_FILL)
 {
-	//m_light.SetDiffuseIntensity(1, 1, 1);
-	//m_light.SetSpecularIntensity(1, 1, 1);
+	m_light.SetDiffuseIntensity(1, 1, 1);
+	m_light.SetSpecularIntensity(1, 1, 1);
 
 	m_eyex = -10;	m_eyey = -15;	m_eyez = 0;
 	m_centerx = m_eyex + (DELTA * cos(0.0));
@@ -51,6 +51,9 @@ void CMyApplication::OnInit()
 	glClearColor(1, 1, 1, 1);
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CCW);
+	ShowCursor(false);
+	//glutSetCursor(GLUT_CURSOR_NONE);
+
 }
 
 void CMyApplication::OnIdle()
@@ -67,6 +70,8 @@ void CMyApplication::SetupCamera()
 		m_eyex, m_eyey, m_eyez,
 		m_centerx, m_centery, m_centerz,
 		0, 0, 1);
+	glutWarpPointer(400, 300);
+
 }
 
 void CMyApplication::OnDisplay(void)
@@ -101,17 +106,15 @@ void CMyApplication::OnReshape(int width, int height)
 
 void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 {
-	if ((key == 'a') || (key == 'A'))/*GLUT_KEY_LEFT*/
+	if ((key == 'a') || (key == 'A'))//left
 	{
-		//m_angle += (DELTA_ANGLE * M_PI) / 180;
 		m_angle += (ROTATION_SPEED * M_PI) / 180;
 	}
-	else if ((key == 'd') || (key == 'D'))/*GLUT_KEY_RIGHT*/
+	else if ((key == 'd') || (key == 'D'))//right
 	{
-		//m_angle -= (DELTA_ANGLE * M_PI) / 180;
 		m_angle -= (ROTATION_SPEED * M_PI) / 180;
 	}
-	else if ((key == 'w') || (key == 'W')) /*GLUT_KEY_UP*/
+	else if ((key == 'w') || (key == 'W')) //up
 	{
 		GLdouble tempEyeX = m_eyex + (DELTA * cos(m_angle));
 		GLdouble tempEyeY = m_eyey + (DELTA * sin(m_angle));
@@ -121,7 +124,7 @@ void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 			m_eyey = tempEyeY;
 		}
 	}
-	else if ((key == 's') || (key == 'S')) /*GLUT_KEY_DOWN*/
+	else if ((key == 's') || (key == 'S')) //down
 	{
 		GLdouble tempEyeX = m_eyex - (DELTA * cos(m_angle));
 		GLdouble tempEyeY = m_eyey - (DELTA * sin(m_angle));
@@ -138,6 +141,32 @@ void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 		exit(1);
 	PostRedisplay();
 }
+
+void CMyApplication::OnMouse(int button, int state, int x, int y)
+{
+
+}
+int x_m = 0;
+void CMyApplication::OnPassiveMotion(int x, int y)
+{
+	//if (x_m >= x)
+	if (x < 401)
+	{
+		m_angle += (ROTATION_SPEED * M_PI) / 180;
+	}
+	if (x > 399)
+	{
+		m_angle -= (ROTATION_SPEED * M_PI) / 180;
+	}
+	m_centerx = m_eyex + (DELTA * cos(m_angle));
+	m_centery = m_eyey + (DELTA * sin(m_angle));
+	x_m = x;
+	
+	PostRedisplay();
+
+}
+
+
 
 void CMyApplication::DrawSkyBox()const
 {

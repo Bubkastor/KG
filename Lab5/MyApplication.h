@@ -2,7 +2,7 @@
 #include "glapplication.h"
 #include "Surface.h"
 #include "LabyrinthMap.h"
-//#include "OmniLight.h"
+#include "OmniLight.h"
 #include "SkyBox.h"
 
 class CMyApplication :
@@ -18,7 +18,8 @@ protected:
 	virtual void OnDisplay(void);
 	virtual void OnReshape(int width, int height);
 	virtual void OnKeyboard(unsigned char key, int x, int y);
-
+	virtual void OnMouse(int button, int state, int x, int y);
+	virtual void OnPassiveMotion(int x, int y);
 
 private:
 	void SetupCamera();
@@ -26,7 +27,7 @@ private:
 
 	CSurface m_surface;
 	CLabyrinthMap m_labyrinth;
-	//COmniLight m_light;
+	COmniLight m_light;
 
 	float m_angle;
 

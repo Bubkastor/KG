@@ -23,7 +23,6 @@ protected:
 	virtual void OnMotion(int x, int y);
 	virtual void OnIdle();
 	virtual void OnSpecialHadler(int key, int x, int y);
-	//virtual void glutMotionFunc(void (GLUTCALLBACK *func)(int x, int y));
 	virtual void OnPassiveMotion(int x, int y);
 
 	// Инициирует перерисовку изображения в окне

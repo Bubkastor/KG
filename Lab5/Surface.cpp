@@ -24,7 +24,7 @@ void CSurface::Draw(double z, GLubyte r, GLubyte g, GLubyte b)const
 
 	for (int row = 0; row < m_rows - 1; ++row, y += dy)
 	{
-		glBegin(GL_TRIANGLE_STRIP);
+		glBegin(GL_QUAD_STRIP);//GL_TRIANGLE_STRIP
 		float x = m_xMin;
 
 		for (int column = 0; column <= m_columns; ++column, x += dx)

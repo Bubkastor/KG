@@ -10,6 +10,8 @@ public:
 
 	// Положение источника света
 	void SetPosition(CVector3f const& position);
+	void SetPosition(CVector3d const& position);
+
 	// активизацтя источника света
 	void SetLight(GLenum light)const;
 	// параметры ослабления интенсивности в зависимости от расстояния

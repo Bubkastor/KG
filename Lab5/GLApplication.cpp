@@ -39,6 +39,9 @@ CGLApplication::CGLApplication(
 		glutInitWindowSize(width, height);
 	}
 
+	//glutGameModeString("1366:768:32"); // For full screen game mode
+	//glutEnterGameMode();
+
 	// Создаем окно приложения
 	glutCreateWindow(title);
 

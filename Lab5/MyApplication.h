@@ -4,6 +4,8 @@
 #include "LabyrinthMap.h"
 #include "OmniLight.h"
 #include "SkyBox.h"
+#include "Light.h"
+#include "Camera.h"
 
 class CMyApplication :
 	public CGLApplication
@@ -21,21 +23,27 @@ protected:
 	virtual void OnMouse(int button, int state, int x, int y);
 	virtual void OnPassiveMotion(int x, int y);
 
+
 private:
-	void SetupCamera();
+
+	void CalculateFrameRate();
+	void GetFrameTime();
+	void SetupLight();
 	void DrawSkyBox()const;
 
 	CSurface m_surface;
 	CLabyrinthMap m_labyrinth;
 	COmniLight m_light;
+	CCamera m_camera;
 
+	float m_FPS;
 	float m_angle;
-
-	//static const int DELTA_ANGLE = 1;
+	float m_anglez;
+	float m_FrameInterval;
 	static const double DELTA;
 
 	GLdouble m_eyex;
-	GLdouble m_eyey;
+	GLdouble m_eyey;  
 	GLdouble m_eyez;
 
 	GLdouble m_centerx;
@@ -50,4 +58,10 @@ private:
 	static const double FOV;
 	static const double ZNEAR;
 	static const double ZFAR;
+	int m_width;
+	int m_height;
+	bool m_fog;
+	bool m_skyBoxb;
+	bool m_mouse;
+	int light_sample;
 };

@@ -32,6 +32,14 @@ void COmniLight::SetPosition(CVector3f const& position)
 	m_position = position;
 }
 
+void COmniLight::SetPosition(CVector3d const& position)
+{
+	//m_position = position;
+	m_position.x = position.x;
+	m_position.y = position.y;
+	m_position.z = position.z;
+}
+
 void COmniLight::SetQuadraticAttenuation(GLfloat quadraticAttenuation)
 {
 	m_quadraticAttenuation = quadraticAttenuation;

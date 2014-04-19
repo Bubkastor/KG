@@ -82,6 +82,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="File3ds.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdaf.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="File3ds.h" />
+    <ClInclude Include="stdaf.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

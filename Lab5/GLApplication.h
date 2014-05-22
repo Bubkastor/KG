@@ -19,6 +19,7 @@ protected:
 	virtual void OnDisplay() = 0;	// данный метод всегда должен быть перегружен
 	virtual void OnReshape(int width, int height);
 	virtual void OnKeyboard(unsigned char key, int x, int y);
+	virtual void OnKeyboardUp(unsigned char key, int x, int y);
 	virtual void OnMouse(int button, int state, int x, int y);
 	virtual void OnMotion(int x, int y);
 	virtual void OnIdle();
@@ -36,6 +37,7 @@ private:
 	static void DisplayHandler();
 	static void ReshapeHandler(int width, int height);
 	static void KeyboardHandler(unsigned char key, int x, int y);
+	static void KeyboardUpHandler(unsigned char key, int x, int y);
 	static void MouseHandler(int button, int state, int x, int y);
 	static void MotionHandler(int x, int y);
 	static void SpecialHandler(int key, int x, int y);

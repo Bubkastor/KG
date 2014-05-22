@@ -83,12 +83,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="File3ds.cpp" />
+    <ClCompile Include="GLApplication.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="stdaf.cpp" />
+    <ClCompile Include="MyApplication.cpp" />
+    <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="File3ds.h" />
-    <ClInclude Include="stdaf.h" />
+    <ClInclude Include="GLApplication.h" />
+    <ClInclude Include="MyApplication.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

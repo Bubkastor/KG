@@ -2,12 +2,12 @@
 #include "MyApplication.h"
 #include "Vector3.h"
 
-#define kSpeed  5.0
+#define kSpeed  20.0
 
 const float M_PI = 3.14159265358979323846f;
 const double CMyApplication::FOV = 60;    //угол обзора камеры
 const double CMyApplication::ZNEAR = 0.1; // растояние от до линзы
-const double CMyApplication::ZFAR = 100;  // растояние от линзы до дальнего видемой поверхности
+const double CMyApplication::ZFAR = 200;  // растояние от линзы до дальнего видемой поверхности
 const int CMyApplication::ROTATION_SPEED = 2;
 const double CMyApplication::DELTA = 0.1;
 
@@ -37,19 +37,18 @@ L"images/brickTexture1.jpg")
 , m_FPS(0)
 , m_FrameInterval(0)
 {
+	m_KeyWPress = false;
+	m_KeySPress = false;
+	m_KeyAPress = false;
+	m_KeyDPress = false;
 	m_fog = false;
 	m_skyBoxb = false;
 	m_mouse = true;
 	
 
 	m_camera.m_vPosition.x = 0;	m_camera.m_vPosition.y = 0;	m_camera.m_vPosition.z = 0;
-	//gluLookAt(
-	//	x, y + height, z,
-	//	x - sin(angleX / 180 * PI), y + height + (tan(angleY / 180 * PI)), z - cos(angleX / 180 * PI)
-	//	, 0, 1, 0);
-	//m_camera.m_vView.x = m_camera.m_vPosition.x + (DELTA * cos(0.0));
+
 	m_camera.m_vView.x = m_camera.m_vPosition.x - sin(DELTA / 180 * M_PI) ;
-	//m_camera.m_vView.y = m_camera.m_vPosition.y + (DELTA * sin(0.0));
 	m_camera.m_vView.y = m_camera.m_vPosition.y -cos(DELTA /180 *M_PI);
 	m_camera.m_vView.z = m_camera.m_vPosition.z + (tan(DELTA / 180 * M_PI));
 
@@ -120,7 +119,9 @@ void CMyApplication::OnInit()
 void CMyApplication::OnIdle()
 {
 	// Если приложению нечем заняться - то обонвляем экран
+	
 	PostRedisplay();
+
 }
 
 void CMyApplication::SetupLight()
@@ -148,8 +149,13 @@ void CMyApplication::OnDisplay(void)
 	CalculateFrameRate();
 	GetFrameTime();
 	std::cout << m_FPS<< '\n';
+	
+	glHint(GL_FOG_HINT, GL_NICEST);
+	MoveUp();
+	MoveBack();
+	MoveLeft();
+	MoveRight();
 	m_light.SetPosition(m_camera.m_vPosition);
-
 	if (m_fog)
 	{
 		glEnable(GL_FOG);
@@ -158,7 +164,6 @@ void CMyApplication::OnDisplay(void)
 	{
 		glDisable(GL_FOG);
 	}
-
 	 //Задаем режим тумана
 	glFogi(GL_FOG_MODE, GL_EXP2);
 
@@ -171,18 +176,12 @@ void CMyApplication::OnDisplay(void)
 
 	m_camera.Look();
 	if (m_mouse)
-	{
 		glutWarpPointer(m_width / 2, m_height / 2);
-
-	}
 
 	glEnable(GL_LIGHTING);
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 	glEnable(GL_NORMALIZE);
-
-	
 	SetupLight();
-	
 		
 	glEnable(GL_TEXTURE_2D);
 	glPolygonMode(GL_FRONT_AND_BACK, m_polygonMode);
@@ -192,7 +191,7 @@ void CMyApplication::OnDisplay(void)
 	m_surface.Draw(1, 122, 123, 115);
 	
 	glDisable(GL_TEXTURE_2D);
-		
+	glutSolidIcosahedron();
 	m_labyrinth.DrawLabyrinth();
 }
 	
@@ -212,54 +211,30 @@ void CMyApplication::OnReshape(int width, int height)
 	glMatrixMode(GL_MODELVIEW);
 }
 
+void CMyApplication::OnKeyboardUp(unsigned char key, int x, int y)
+{
+	if (key == 'A' || key == 'a')
+		m_KeyAPress = false;
+	if (key == 'D' || key == 'd')
+		m_KeyDPress = false;
+	if (key == 'W' || key == 'w')
+		m_KeyWPress = false;
+	if (key == 'S' || key == 's')
+		m_KeySPress = false;
+}
 void CMyApplication::OnKeyboard(unsigned char key, int x, int y)
 {
-	float speed = kSpeed * m_FrameInterval;
-	if (GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80) //((key == 'a') || (key == 'A'))//left
-	{
-		GLdouble tempEyeX = m_camera.m_vPosition.x + (DELTA * cos(m_angle + M_PI / 2));
-		GLdouble tempEyeY = m_camera.m_vPosition.y + (DELTA * sin(m_angle + M_PI / 2));
-		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
-		{
-			m_camera.m_vPosition.x = tempEyeX;
-			m_camera.m_vPosition.y = tempEyeY;
-		}
-	}
 	
+	if (GetKeyState(VK_LEFT) & 0x80 || GetKeyState('A') & 0x80) //((key == 'a') || (key == 'A'))//left
+		m_KeyAPress = true;
 	if (GetKeyState(VK_RIGHT) & 0x80 || GetKeyState('D') & 0x80)
-	{
-		GLdouble tempEyeX = m_camera.m_vPosition.x - (DELTA * cos(m_angle + M_PI / 2));
-		GLdouble tempEyeY = m_camera.m_vPosition.y - (DELTA * sin(m_angle + M_PI / 2));
-		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
-		{
-			m_camera.m_vPosition.x = tempEyeX;
-			m_camera.m_vPosition.y = tempEyeY;
-		}
-	}
-	if (GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80)  
-	{
-		GLdouble tempEyeX = m_camera.m_vPosition.x + (DELTA * cos(m_angle));
-		GLdouble tempEyeY = m_camera.m_vPosition.y + (DELTA * sin(m_angle));
-		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
-		{
-			m_camera.m_vPosition.x = tempEyeX;
-			m_camera.m_vPosition.y = tempEyeY;
-		}
-	}
+		m_KeyDPress = true;
+	if (GetKeyState(VK_UP) & 0x80 || GetKeyState('W') & 0x80)
+		m_KeyWPress = true;
 	if (GetKeyState(VK_DOWN) & 0x80 || GetKeyState('S') & 0x80)
-	{
-		GLdouble tempEyeX = m_camera.m_vPosition.x - (DELTA * cos(m_angle));
-		GLdouble tempEyeY = m_camera.m_vPosition.y - (DELTA * sin(m_angle));
-		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
-		{
-			m_camera.m_vPosition.x = tempEyeX;
-			m_camera.m_vPosition.y = tempEyeY;
-		}
+		m_KeySPress = true;
 
-	}
 
-	m_camera.m_vView.x = m_camera.m_vPosition.x + (speed * cos(m_angle));
-	m_camera.m_vView.y = m_camera.m_vPosition.y + (speed * sin(m_angle));
 
 	if (key == VK_ESCAPE)
 		exit(1);
@@ -314,20 +289,20 @@ void CMyApplication::OnPassiveMotion(int x, int y)
 {
 	if (x < (m_width / 2))
 	{
-		m_angle += (ROTATION_SPEED/2 * M_PI) / 180;
+		m_angle += (ROTATION_SPEED * M_PI) / 180;
 	}
 	if (x >(m_width / 2))
 	{
-		m_angle -= (ROTATION_SPEED/2 * M_PI) / 180;
+		m_angle -= (ROTATION_SPEED * M_PI) / 180;
 	}
 	if (y < (m_height / 2))
 	{
-		m_anglez += (ROTATION_SPEED / 2 * M_PI) / 180;
+		m_anglez += (ROTATION_SPEED * M_PI) / 180;
 	}
 
 	if (y > (m_height / 2))
 	{
-		m_anglez -= (ROTATION_SPEED / 2 * M_PI) / 180;
+		m_anglez -= (ROTATION_SPEED * M_PI) / 180;
 	}
 	if (m_anglez<-1.5){ m_anglez = -1.5; }
 	if (m_anglez>1.5){ m_anglez = 1.5; }
@@ -346,3 +321,68 @@ void CMyApplication::DrawSkyBox()const
 	m_skyBox.Draw();
 	//glEnable(GL_LIGHTING);
 }	  
+
+void CMyApplication::MoveUp()
+{
+	float speed = kSpeed * m_FrameInterval;
+	if (m_KeyWPress)
+	{
+		GLdouble tempEyeX = m_camera.m_vPosition.x + (DELTA * cos(m_angle))*speed;
+		GLdouble tempEyeY = m_camera.m_vPosition.y + (DELTA * sin(m_angle))*speed;
+		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
+		{
+			m_camera.m_vPosition.x = tempEyeX;
+			m_camera.m_vPosition.y = tempEyeY;
+		}
+		m_camera.m_vView.x = m_camera.m_vPosition.x + (DELTA * cos(m_angle));
+		m_camera.m_vView.y = m_camera.m_vPosition.y + (DELTA * sin(m_angle));
+	}
+}
+void CMyApplication::MoveBack()
+{
+	float speed = kSpeed * m_FrameInterval;
+	if (m_KeySPress)
+	{
+		GLdouble tempEyeX = m_camera.m_vPosition.x - (DELTA * cos(m_angle))*speed;
+		GLdouble tempEyeY = m_camera.m_vPosition.y - (DELTA * sin(m_angle))*speed;
+		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
+		{
+			m_camera.m_vPosition.x = tempEyeX;
+			m_camera.m_vPosition.y = tempEyeY;
+		}
+		m_camera.m_vView.x = m_camera.m_vPosition.x + (DELTA * cos(m_angle));
+		m_camera.m_vView.y = m_camera.m_vPosition.y + (DELTA * sin(m_angle));
+	}
+}
+void CMyApplication::MoveLeft()
+{
+	float speed = kSpeed * m_FrameInterval;
+	if (m_KeyAPress)
+	{
+		GLdouble tempEyeX = m_camera.m_vPosition.x + (DELTA * cos(m_angle + M_PI / 2))*speed;
+		GLdouble tempEyeY = m_camera.m_vPosition.y + (DELTA * sin(m_angle + M_PI / 2))*speed;
+		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
+		{
+			m_camera.m_vPosition.x = tempEyeX;
+			m_camera.m_vPosition.y = tempEyeY;
+		}
+		m_camera.m_vView.x = m_camera.m_vPosition.x + (DELTA * cos(m_angle));
+		m_camera.m_vView.y = m_camera.m_vPosition.y + (DELTA * sin(m_angle));
+	}
+}
+void CMyApplication::MoveRight()
+{
+	float speed = kSpeed * m_FrameInterval;
+	if (m_KeyDPress)
+	{
+		GLdouble tempEyeX = m_camera.m_vPosition.x - (DELTA * cos(m_angle + M_PI / 2))*speed;
+		GLdouble tempEyeY = m_camera.m_vPosition.y - (DELTA * sin(m_angle + M_PI / 2))*speed;
+		if (!m_labyrinth.IsBarrier(tempEyeX, tempEyeY))
+		{
+			m_camera.m_vPosition.x = tempEyeX;
+			m_camera.m_vPosition.y = tempEyeY;
+		}
+		m_camera.m_vView.x = m_camera.m_vPosition.x + (DELTA * cos(m_angle));
+		m_camera.m_vView.y = m_camera.m_vPosition.y + (DELTA * sin(m_angle));
+	}
+}

@@ -1,0 +1,11 @@
+#pragma once
+#include <lib3ds.h>
+#include <stdexcept>
+#include <string> 
+#include <sstream>
+#include <iostream> 
+#include <Windows.h>
+#include <GL/glut.h>
+#include "File3ds.h"
+#include <math.h>
+#include <assert.h>

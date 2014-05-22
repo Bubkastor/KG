@@ -1,36 +1,66 @@
-#include "stdaf.h"
-
+#include "stdafx.h"
+#include "MyApplication.h"
 using namespace std;
-void Dump3dsFile(const char *fileName);// Выводим информацию о материалах
-void DumpMaterials(Lib3dsFile const * pFile);// Выводим информацию об источниках света void DumpLights(Lib3dsFile const *pFile);// Выводим информацию о полигональных сетках void DumpMeshes(Lib3dsFile const * pFile);
-std::string VectorToString(float const vec[3]);std::string TextureCoordsToString(float const vec[2]);
+
+
+
+void Dump3dsFile(const char *fileName);
+
+// Выводим информацию о материалах
+void DumpMaterials(Lib3dsFile const * pFile);
+
+// Выводим информацию об источниках света 
+void DumpLights(Lib3dsFile const *pFile);
+
+// Выводим информацию о полигональных сетках 
+void DumpMeshes(Lib3dsFile const * pFile);
+
+std::string VectorToString(float const vec[3]);
+std::string TextureCoordsToString(float const vec[2]);
 std::string RgbToString(float const rgb[3]);
 
-int main(int argc, char* argv [])
+
+
+CMyApplication app("Rendering using Vertex Arrays", 800, 600);
+
+int main()
 {
-	if (argc == 1)
-	{   // Если программа запущена без аргументов командной строки,  
-		// выводим инструкцию по пользованию   
-		cout << "Usage:\n01_dump_3ds.exe <3ds file name>\n";
-		return 0;
-	}
-	else if (argc != 2)
-	{   // Если программа запущена с неверным числом аргументов,   
-		// сообщаем о некорректном использовании   
-		cout << "Invalid command line. Use the following syntax\n" << "01_dump_3ds.exe <3ds file name>\n";
-		return 1;
-	}
 	try
 	{
-		Dump3dsFile(argv[1]);
+		app.MainLoop();
 	}
 	catch (std::runtime_error const& e)
 	{
-		cout << "Error: " << e.what();
-		return 2;
+		std::cout << e.what();
 	}
 	return 0;
 }
+
+//int main(int argc, char* argv [])
+//{
+//	if (argc == 1)
+//	{   // Если программа запущена без аргументов командной строки,  
+//		// выводим инструкцию по пользованию   
+//		cout << "Usage:\n01_dump_3ds.exe <3ds file name>\n";
+//		return 0;
+//	}
+//	else if (argc != 2)
+//	{   // Если программа запущена с неверным числом аргументов,   
+//		// сообщаем о некорректном использовании   
+//		cout << "Invalid command line. Use the following syntax\n" << "01_dump_3ds.exe <3ds file name>\n";
+//		return 1;
+//	}
+//	try
+//	{
+//		Dump3dsFile(argv[1]);
+//	}
+//	catch (std::runtime_error const& e)
+//	{
+//		cout << "Error: " << e.what();
+//		return 2;
+//	}
+//	return 0;
+//}
 
 
 void DumpMaterials(Lib3dsFile const * pFile)
@@ -72,7 +102,8 @@ void DumpLights(Lib3dsFile const *pFile)
 		cout << "\t\t" << "Color: " << RgbToString(pLight->color) << "\n";
 		cout << "\t\t" << "Position: " << VectorToString(pLight->position)
 			<< "\n";
-	}
+	}
+
 }
 void DumpMeshes(Lib3dsFile const * pFile)
 {

@@ -1,5 +1,5 @@
 #pragma once
-#include "stdaf.h"
+#include "stdafx.h"
 class CFile3ds
 {
 public:

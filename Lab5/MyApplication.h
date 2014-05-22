@@ -20,6 +20,7 @@ protected:
 	virtual void OnDisplay(void);
 	virtual void OnReshape(int width, int height);
 	virtual void OnKeyboard(unsigned char key, int x, int y);
+	virtual void OnKeyboardUp(unsigned char key, int x, int y);
 	virtual void OnMouse(int button, int state, int x, int y);
 	virtual void OnPassiveMotion(int x, int y);
 
@@ -41,6 +42,10 @@ private:
 	float m_anglez;
 	float m_FrameInterval;
 	static const double DELTA;
+	void MoveUp();
+	void MoveBack();
+	void MoveLeft();
+	void MoveRight();
 
 	GLdouble m_eyex;
 	GLdouble m_eyey;  
@@ -64,4 +69,8 @@ private:
 	bool m_skyBoxb;
 	bool m_mouse;
 	int light_sample;
+	bool m_KeyWPress;
+	bool m_KeySPress;
+	bool m_KeyAPress;
+	bool m_KeyDPress;
 };

@@ -39,11 +39,11 @@ CGLApplication::CGLApplication(
 		glutInitWindowSize(width, height);
 	}
 
-	//glutGameModeString("1366:768:32"); // For full screen game mode
-	//glutEnterGameMode();
+	glutGameModeString("1366:768:32"); // For full screen game mode
+	glutEnterGameMode();
 
 	// Создаем окно приложения
-	glutCreateWindow(title);
+	//glutCreateWindow(title);
 
 	// Задаем обработчики событий
 	InitEventHandlers();
@@ -60,6 +60,7 @@ void CGLApplication::InitEventHandlers()
 	glutIdleFunc(&IdleHandler);
 	glutSpecialFunc(&SpecialHandler);
 	glutPassiveMotionFunc(&PassiveMotion);
+	glutKeyboardUpFunc(&KeyboardUpHandler);
 	// При желании можно добавить обработчики остальных
 	// событий, поддерживаемых glut
 }
@@ -112,6 +113,11 @@ void CGLApplication::KeyboardHandler(unsigned char key, int x, int y)
 	// Переадресовываем вызов обработчика события экземпляру класса приложения
 	m_pApplication->OnKeyboard(key, x, y);
 }
+void CGLApplication::KeyboardUpHandler(unsigned char key, int x, int y)
+{
+	// Переадресовываем вызов обработчика события экземпляру класса приложения
+	m_pApplication->OnKeyboardUp(key, x, y);
+}
 
 // Метод может быть перегружен в классе-наследнике
 void CGLApplication::OnReshape(int width, int height)
@@ -123,6 +129,10 @@ void CGLApplication::OnReshape(int width, int height)
 
 // Метод может быть перегружен в классе-наследнике
 void CGLApplication::OnKeyboard(unsigned char /*key*/, int /*x*/, int /*y*/)
+{
+
+}
+void CGLApplication::OnKeyboardUp(unsigned char /*key*/, int /*x*/, int /*y*/)
 {
 
 }
